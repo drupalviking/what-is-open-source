@@ -1,0 +1,12 @@
+# The front page of the PDF handout. The title comes from the article itself.
+#
+# date is typed here, not taken from the clock, so that building on a later day
+# gives the same file. Change it when you issue a new version.
+#
+# logo goes in the top right corner, as a PNG or JPEG. If the file isn't there,
+# the build warns and leaves the corner empty.
+
+course: 'Developing open-source web software'
+author: 'Hilmar Kári Hallbjörnsson'
+date: '2026-11-08'
+logo: 'assets/ru-logo.png'

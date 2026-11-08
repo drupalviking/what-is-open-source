@@ -1,0 +1,7 @@
+.venv/
+__pycache__/
+.DS_Store
+.obsidian/workspace.json
+build/render/
+build/*.pdf
+assets/ru-logo.png

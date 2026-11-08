@@ -1,0 +1,294 @@
+# Every number that goes out of date, in one place.
+#
+# The article (manuscript/) and the deck (slides/) never contain these numbers
+# directly. They contain a placeholder, {{ drupal }}, and tools/build.py fills it
+# in from this file. {{ checked }} is the date the numbers were last fetched.
+#
+# Each entry has:
+#   value:  what goes into the article and the deck. Always quoted, so YAML
+#           doesn't turn 26.10 into the number 26.1.
+#   label:  what the number is, for the update report.
+#   source: where a person can check it in a browser.
+#   fetch:  how tools/update_numbers.py finds the current value. Leave it out
+#           for numbers that need a human (they are listed as "check by hand").
+#
+# Fetch methods (see tools/update_numbers.py for the details):
+#   json:   a URL returning JSON, and path: to the value. A path is keys and list
+#           indexes separated by dots; * takes every item of a list, and
+#           [key=value] picks the first item where key has that value.
+#   text:   a URL returning HTML or text, and regex: with one group.
+#   npm, pypi, github_release, github_tags, nuget: a package or repository name.
+#   w3techs: a W3Techs technology slug, and share: all (of all websites) or
+#           cms (of websites whose CMS W3Techs can identify).
+# Options for every method:
+#   pick:   first (default) or max, when the method finds several values.
+#   stable: true to skip values with letters in them (beta, rc, nightly).
+#   add:    a number to add (used to turn a last page index into a count).
+#   format: thousands, to write 56813 as 56,813.
+
+checked: '2026-11-04'
+
+numbers:
+
+  # Slide 10, examples of open source software.
+
+  libreoffice:
+    value: '26.8.2'
+    label: LibreOffice, newest version
+    source: https://www.libreoffice.org/download/download-libreoffice/
+    fetch:
+      text: https://download.documentfoundation.org/libreoffice/stable/
+      regex: 'href="(\d+\.\d+\.\d+)/"'
+      pick: max
+
+  vlc:
+    value: '3.0.24'
+    label: VLC media player, newest version
+    source: https://www.videolan.org/vlc/
+    fetch:
+      text: https://update.videolan.org/vlc/status-win-x64
+      regex: '^(\d+\.\d+\.\d+)'
+
+  gimp:
+    value: '3.2.8'
+    label: GIMP, newest stable version
+    source: https://www.gimp.org/downloads/
+    fetch:
+      json: https://www.gimp.org/gimp_versions.json
+      path: STABLE.0.version
+
+  shotcut:
+    value: '26.9.27'
+    label: Shotcut, newest version
+    source: https://shotcut.org/download/
+    fetch:
+      github_release: mltframework/shotcut
+
+  brave:
+    value: '1.98.63'
+    label: Brave, newest stable (Release channel) version
+    source: https://brave.com/latest/
+    # Not GitHub: Brave tags its Nightly and Beta builds there as releases too.
+    fetch:
+      text: https://versions.brave.com/latest/release-windows-x64.version
+      regex: '(\d+\.\d+\.\d+)'
+
+  linux:
+    value: '7.3.1'
+    label: Linux kernel, newest stable version
+    source: https://www.kernel.org/
+    fetch:
+      json: https://www.kernel.org/releases.json
+      path: latest_stable.version
+
+  # Slide 13, content management systems.
+
+  wordpress:
+    value: '7.1.4'
+    label: WordPress, newest version
+    source: https://wordpress.org/download/releases/
+    fetch:
+      json: https://api.wordpress.org/core/version-check/1.7/
+      path: offers.0.version
+
+  joomla:
+    value: '6.2.0'
+    label: Joomla, newest version
+    source: https://www.joomla.org/announcements/release-news.html
+    fetch:
+      json: https://endoflife.date/api/joomla.json
+      path: 0.latest
+
+  drupal:
+    value: '11.4.11'
+    label: Drupal, newest stable version
+    source: https://www.drupal.org/project/drupal/releases
+    fetch:
+      json: https://endoflife.date/api/drupal.json
+      path: 0.latest
+
+  drupal_next:
+    value: '12.0 due Dec 2026'
+    label: Drupal, the next major release (empty it once Drupal 12 is out, and fix the table cell)
+    source: https://www.drupal.org/about/core/policies/core-release-cycles/schedule
+
+  umbraco:
+    value: '18.3.0'
+    label: Umbraco, newest version
+    source: https://releases.umbraco.com/
+    fetch:
+      nuget: Umbraco.Cms
+      stable: true
+      pick: max
+
+  opencms:
+    value: '22'
+    label: OpenCms, newest version
+    source: https://www.opencms.org/en/
+    fetch:
+      text: https://www.opencms.org/en/
+      regex: 'OpenCms (\d+(?:\.\d+)*)'
+      pick: max
+
+  django_cms:
+    value: '5.1.3'
+    label: django CMS, newest version
+    source: https://pypi.org/project/django-cms/
+    fetch:
+      pypi: django-cms
+
+  openwga:
+    value: '7.12.6'
+    label: OpenWGA, newest version
+    source: https://github.com/Innovationgate/OpenWGA/tags
+    fetch:
+      github_tags: Innovationgate/OpenWGA
+      stable: true
+      pick: max
+
+  # Slide 13, share of all websites (W3Techs). W3Techs looks at the top 10
+  # million websites; a share under 0.1% is written "< 0.1%".
+
+  share_wordpress:
+    value: '39.5%'
+    label: WordPress, share of all websites
+    source: https://w3techs.com/technologies/details/cm-wordpress
+    fetch: {w3techs: cm-wordpress, share: all}
+
+  share_joomla:
+    value: '1.1%'
+    label: Joomla, share of all websites
+    source: https://w3techs.com/technologies/details/cm-joomla
+    fetch: {w3techs: cm-joomla, share: all}
+
+  share_drupal:
+    value: '0.6%'
+    label: Drupal, share of all websites
+    source: https://w3techs.com/technologies/details/cm-drupal
+    fetch: {w3techs: cm-drupal, share: all}
+
+  share_umbraco:
+    value: '< 0.1%'
+    label: Umbraco, share of all websites
+    source: https://w3techs.com/technologies/details/cm-umbraco
+    fetch: {w3techs: cm-umbraco, share: all}
+
+  share_opencms:
+    value: '< 0.1%'
+    label: OpenCms, share of all websites
+    source: https://w3techs.com/technologies/details/cm-opencms
+    fetch: {w3techs: cm-opencms, share: all}
+
+  share_django_cms:
+    value: '< 0.1%'
+    label: django CMS, share of all websites
+    source: https://w3techs.com/technologies/details/cm-djangocms
+    fetch: {w3techs: cm-djangocms, share: all}
+
+  share_openwga:
+    value: '< 0.1%'
+    label: OpenWGA, share of all websites
+    source: https://w3techs.com/technologies/details/cm-openwga
+    fetch: {w3techs: cm-openwga, share: all}
+
+  share_no_cms:
+    value: '32.2%'
+    label: Websites with no CMS W3Techs can detect
+    source: https://w3techs.com/technologies/overview/content_management
+    fetch:
+      text: https://w3techs.com/technologies/overview/content_management
+      regex: '>None<.*?<td>(\d+(?:\.\d+)?%)'
+
+  cms_share_wordpress:
+    value: '58.2%'
+    label: WordPress, share of websites with a known CMS
+    source: https://w3techs.com/technologies/details/cm-wordpress
+    fetch: {w3techs: cm-wordpress, share: cms}
+
+  cms_share_joomla:
+    value: '1.6%'
+    label: Joomla, share of websites with a known CMS
+    source: https://w3techs.com/technologies/details/cm-joomla
+    fetch: {w3techs: cm-joomla, share: cms}
+
+  cms_share_drupal:
+    value: '0.9%'
+    label: Drupal, share of websites with a known CMS
+    source: https://w3techs.com/technologies/details/cm-drupal
+    fetch: {w3techs: cm-drupal, share: cms}
+
+  # Slide 15, software frameworks.
+
+  dotnet:
+    value: '10.0.14'
+    label: .NET, newest supported (non-preview) version
+    source: https://dotnet.microsoft.com/download/dotnet
+    fetch:
+      json: https://dotnetcli.blob.core.windows.net/dotnet/release-metadata/releases-index.json
+      path: releases-index.[support-phase=active].latest-release
+
+  spring:
+    value: '7.0.10'
+    label: Spring Framework, newest version
+    source: https://github.com/spring-projects/spring-framework/releases
+    fetch:
+      github_release: spring-projects/spring-framework
+
+  bootstrap:
+    value: '5.3.8'
+    label: Bootstrap, newest version
+    source: https://getbootstrap.com/
+    fetch: {npm: bootstrap}
+
+  angular:
+    value: '22.2.4'
+    label: Angular, newest version
+    source: https://angular.dev/reference/releases
+    fetch: {npm: '@angular/core'}
+
+  django:
+    value: '6.1.3'
+    label: Django, newest version
+    source: https://www.djangoproject.com/download/
+    fetch: {pypi: Django}
+
+  react:
+    value: '19.3.1'
+    label: React, newest version
+    source: https://react.dev/versions
+    fetch: {npm: react}
+
+  symfony:
+    value: '8.1.11'
+    label: Symfony, newest stable version
+    source: https://symfony.com/releases
+    fetch:
+      json: https://repo.packagist.org/p2/symfony/http-kernel.json
+      path: packages.symfony/http-kernel.*.version
+      stable: true
+
+  # Speaker notes and the article.
+
+  php:
+    value: '8.5.12'
+    label: PHP, newest version
+    source: https://www.php.net/downloads.php
+    fetch:
+      json: https://www.php.net/releases/index.php?json&version=8
+      path: version
+
+  drupal_modules:
+    value: '56,813'
+    label: Modules on drupal.org (all versions, including unsupported ones)
+    source: https://www.drupal.org/project/project_module
+    fetch:
+      json: https://www.drupal.org/api-d7/node.json?type=project_module&limit=1
+      path: last
+      regex: 'page=(\d+)'
+      add: 1
+      format: thousands
+
+  websites_total:
+    value: '1.13 billion'
+    label: Websites in the world (Forbes Advisor, February 2023)
+    source: https://www.forbes.com/advisor/business/software/website-statistics/
