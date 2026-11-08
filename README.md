@@ -82,7 +82,7 @@ If GitHub refuses requests (it allows 60 an hour without logging in), set `GITHU
 .venv/bin/python tools/build.py --check   # fail if build/ is out of date
 ```
 
-The PDF and the logo aren't in Git. After a fresh clone, get the logo from Reykjavík University, save it as `assets/ru-logo.png`, and run the build. Without the logo, the build warns and leaves that corner of the front page empty. `--check` reports the PDF as out of date until you've built it once.
+The PDF and the logo aren't in Git. After a fresh clone, get the logo from Reykjavík University, save it as `assets/ru-logo.jpg`, and run the build. Without the logo, the build warns and leaves that corner of the front page empty. `--check` reports the PDF as out of date until you've built it once.
 
 The build:
 

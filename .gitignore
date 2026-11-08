@@ -4,4 +4,4 @@ __pycache__/
 .obsidian/workspace.json
 build/render/
 build/*.pdf
-assets/ru-logo.png
+assets/ru-logo.*

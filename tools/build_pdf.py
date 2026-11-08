@@ -278,7 +278,8 @@ def draw_cover(canvas, title: str, cover: dict, styles: dict[str, ParagraphStyle
     line(inline(cover["date"]), styles["cover_date"], bottom - 6)
     canvas.setFont("Sans", 8)
     canvas.setFillColor(MUTED)
-    canvas.drawString(MARGIN, 1.2 * cm, LICENSE)
+    note = f"{LICENSE}. {cover['logo_note']}" if logo else LICENSE
+    canvas.drawString(MARGIN, 1.2 * cm, note)
 
 
 def render(markdown: str, cover: dict) -> bytes:
